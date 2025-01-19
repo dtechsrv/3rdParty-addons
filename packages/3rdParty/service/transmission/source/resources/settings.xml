@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<settings>
+  <category label="10000">
+    <setting label="10100" type="lsep" />
+    <setting type="sep" />
+    <setting id="TRANSMISSION_AUTH" type="bool" label="10101" default="true" />
+    <setting id="TRANSMISSION_USER" type="text" label="10102" default="transmission" enable="eq(-1,true)"/>
+    <setting id="TRANSMISSION_PWD" type="text" label="10103" option="hidden" default="transmission" enable="eq(-2,true)"/>
+  </category>
+  <category label="10001">
+    <setting label="10200" type="lsep" />
+    <setting type="sep" />
+    <setting id="TRANSMISSION_RPC_PORT" type="number" label="10201" default="9091"/>
+    <setting id="TRANSMISSION_PEER_PORT" type="number" label="10202" default="51413"/>
+    <setting id="TRANSMISSION_ENABLE_PMAP" type="bool" label="10203" default="false" />
+    <setting id="TRANSMISSION_ENABLE_DHT" type="bool" label="10204" default="true" />
+    <setting id="TRANSMISSION_ENABLE_LPD" type="bool" label="10205" default="true" />
+    <setting id="TRANSMISSION_ENABLE_UTP" type="bool" label="10206" default="true" />
+    <setting id="TRANSMISSION_REQUIRE_ENC" type="bool" label="10207" default="false" />
+    <setting id="TRANSMISSION_LIMIT_GLOB" type="number" label="10208" default="200" />
+    <setting id="TRANSMISSION_LIMIT_PERT" type="number" label="10209" default="50" />
+  </category>
+  <category label="10002">
+    <setting label="10300" type="lsep" />
+    <setting type="sep" />
+    <setting id="TRANSMISSION_DL_DIR" type="folder" label="10301" value="" default="/storage/downloads" />
+    <setting id="TRANSMISSION_ENABLE_INC" type="bool" label="10302" value="" default="false" />
+    <setting id="TRANSMISSION_INC_DIR" type="folder" label="10303" value="" default="/storage/downloads/incoming" enable="eq(-1,true)" />
+  </category>
+</settings>

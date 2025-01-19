@@ -1,0 +1,66 @@
+#!/bin/sh
+# SPDX-License-Identifier: GPL-2.0
+# Copyright (C) 2018-2021 Frank Hartung (supervisedthinking (@) gmail.com)
+# Copyright (C) 2022-present Gabor Dee (dee.gabor@gmail.com)
+
+. /etc/profile
+
+oe_setup_addon service.transmission
+
+export TRANSMISSION_WEB_HOME="${ADDON_DIR}/web"
+
+chmod a+x ${ADDON_DIR}/bin/*
+
+TRANSMISSION_ARG="-a *.*.*.* -p '${TRANSMISSION_RPC_PORT}' -P '${TRANSMISSION_PEER_PORT}'"
+
+if [ "${TRANSMISSION_AUTH}" = "true" ]; then
+  TRANSMISSION_ARG="${TRANSMISSION_ARG} -t -u ${TRANSMISSION_USER} -v ${TRANSMISSION_PWD}"
+else
+  TRANSMISSION_ARG="${TRANSMISSION_ARG} -T"
+fi
+
+if [ "${TRANSMISSION_ENABLE_PMAP}" = "true" ]; then
+  TRANSMISSION_ARG="${TRANSMISSION_ARG} -m"
+else
+  TRANSMISSION_ARG="${TRANSMISSION_ARG} -M"
+fi
+
+if [ "${TRANSMISSION_ENABLE_DHT}" = "true" ]; then
+  TRANSMISSION_ARG="${TRANSMISSION_ARG} -o"
+else
+  TRANSMISSION_ARG="${TRANSMISSION_ARG} -O"
+fi
+
+if [ "${TRANSMISSION_ENABLE_LPD}" = "true" ]; then
+  TRANSMISSION_ARG="${TRANSMISSION_ARG} -y"
+else
+  TRANSMISSION_ARG="${TRANSMISSION_ARG} -Y"
+fi
+
+if [ "${TRANSMISSION_ENABLE_UTP}" = "true" ]; then
+  TRANSMISSION_ARG="${TRANSMISSION_ARG} --utp"
+else
+  TRANSMISSION_ARG="${TRANSMISSION_ARG} --no-utp"
+fi
+
+if [ "${TRANSMISSION_REQUIRE_ENC}" = "true" ]; then
+  TRANSMISSION_ARG="${TRANSMISSION_ARG} -er"
+else
+  TRANSMISSION_ARG="${TRANSMISSION_ARG} -et"
+fi
+
+TRANSMISSION_ARG="${TRANSMISSION_ARG} -L '${TRANSMISSION_LIMIT_GLOB}' -l '${TRANSMISSION_LIMIT_PERT}'"
+
+mkdir -p "${TRANSMISSION_DL_DIR}"
+TRANSMISSION_ARG="${TRANSMISSION_ARG} -w \"${TRANSMISSION_DL_DIR}\""
+
+if [ "${TRANSMISSION_ENABLE_INC}" = "true" ]; then
+  mkdir -p "${TRANSMISSION_INC_DIR}"
+  TRANSMISSION_ARG="${TRANSMISSION_ARG} --incomplete-dir \"${TRANSMISSION_INC_DIR}\""
+else
+  TRANSMISSION_ARG="${TRANSMISSION_ARG} --no-incomplete-dir"
+fi
+
+TRANSMISSION_ARG="${TRANSMISSION_ARG} --no-watch-dir"
+
+eval EVENT_NOEPOLL=1 exec transmission-daemon -f ${TRANSMISSION_ARG}
