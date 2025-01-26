@@ -1,0 +1,38 @@
+diff --git a/distributions/LibreELEC/options b/distributions/LibreELEC/options
+index 5a663f4f05..e12d61d200 100644
+--- a/distributions/LibreELEC/options
++++ b/distributions/LibreELEC/options
+@@ -241,6 +241,9 @@
+ # build and install Joystick support (yes / no)
+   JOYSTICK_SUPPORT="yes"
+ 
++# Xonar U1 control support (yes / no)
++  XONARD_SUPPORT="yes"
++
+ # build and install CEC adapter support (yes / no)
+   CEC_SUPPORT="yes"
+ 
+diff --git a/distributions/LibreELEC/show_config b/distributions/LibreELEC/show_config
+index 3b0bda9ef8..78032d4ae1 100644
+--- a/distributions/LibreELEC/show_config
++++ b/distributions/LibreELEC/show_config
+@@ -12,6 +12,7 @@ show_distro_config() {
+   config_message+="\n - CEC Adapter support:\t\t\t ${CEC_SUPPORT}"
+   config_message+="\n - CEC Framework support:\t\t ${CEC_FRAMEWORK_SUPPORT}"
+   config_message+="\n - Kodi Joystick support:\t\t ${JOYSTICK_SUPPORT}"
++  config_message+="\n - Xonar U1 control support:\t\t ${XONARD_SUPPORT}"
+ 
+   # Kodi configuration
+ 
+diff --git a/packages/virtual/misc-packages/package.mk b/packages/virtual/misc-packages/package.mk
+index 88afd339db..cb92a90d54 100644
+--- a/packages/virtual/misc-packages/package.mk
++++ b/packages/virtual/misc-packages/package.mk
+@@ -9,3 +9,7 @@ PKG_URL=""
+ PKG_DEPENDS_TARGET="toolchain ${ADDITIONAL_PACKAGES}"
+ PKG_SECTION="virtual"
+ PKG_LONGDESC="misc-packages: Metapackage for miscellaneous packages"
++
++if [ "${XONARD_SUPPORT}" = "yes" ]; then
++  PKG_DEPENDS_TARGET+=" xonard"
++fi
