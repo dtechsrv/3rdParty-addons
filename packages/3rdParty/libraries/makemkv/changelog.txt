@@ -1,2 +1,0 @@
-0
-- reset addon version
